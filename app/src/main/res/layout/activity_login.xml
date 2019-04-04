@@ -20,10 +20,14 @@
             android:layout_marginBottom="8dp"
             android:visibility="gone"/>
 
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="179dp" android:id="@+id/WebView"/>
     <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+        android:layout_height="match_parent">
 
         <LinearLayout
                 android:id="@+id/email_login_form"
@@ -51,7 +55,7 @@
                     android:layout_height="wrap_content">
 
                 <EditText
-                        android:id="@+id/password"
+                        android:id="@+id/Password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_password"
@@ -60,7 +64,7 @@
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:singleLine="true" android:autofillHints=""/>
+                        android:singleLine="true" android:autofillHints="" tools:targetApi="o"/>
 
             </android.support.design.widget.TextInputLayout>
 

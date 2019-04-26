@@ -2,4 +2,7 @@
 SkyMobile for Android
 
 ## Progress
-2%
+10% Finished
+
+- Skyward login API is being made.
+- Skyward parser API prep.

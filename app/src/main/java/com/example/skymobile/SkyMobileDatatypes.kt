@@ -1,21 +1,20 @@
 package com.example.skymobile
 
-class Course constructor(className: String, period: Int, teacher: String){
-    val ClassName = className
-    var Grades = mutableMapOf<String, String>()
-    val Period = period
-    val Teacher = teacher
-    var Credits = 1.0
-}
+data class Account(
+    var nickname: String,
+    val username: String,
+    val password: String
+)
 
-class Assignment constructor(className: String, assignmentName: String, grade: Double){
-    val Class = className
-    val Assignment = assignmentName
-    var Grade = grade
-}
+data class Course(
+    val name: String,
+    var assignments: List<Assignment>,
+    val period: Int,
+    val teacher: String,
+    var credits: Double = 1.0
+)
 
-class Account constructor(nick: String, user: String, password: String){
-    var Nickname = nick
-    val Username = user
-    val Password = password
-}
+data class Assignment(
+    val name: String,
+    var grade: Double
+)

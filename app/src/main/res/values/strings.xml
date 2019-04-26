@@ -12,4 +12,5 @@
         completions."
     </string>
     <string name="StudentID">Student ID</string>
+    <string name="login">Login</string>
 </resources>

@@ -2,25 +2,18 @@ package com.example.skymobile
 
 import android.os.Bundle
 import android.os.Message
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.webkit.*
 import kotlinx.android.synthetic.main.activity_login.*
-import android.webkit.WebSettings.PluginState
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.Intent
-
-
-
-
 
 class SkywardLogin : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         loadWebView()
     }
 
@@ -28,25 +21,22 @@ class SkywardLogin : AppCompatActivity(){
     fun sendMessage(view: View) {
         val studentID = StudentID.text.toString()
         val password = Password.text.toString()
-        println(studentID)
-        println(password)
+
+        webView.evaluateJavascript("""
+                 login.value = "$studentID"; password.value = "$password"; bLogin.click();
+            """.trimIndent()){
+                print(it)
+            }
     }
 
     fun loadWebView() {
-        Log.d("Debug", "LEADDDDDD")
         var cookieMan = CookieManager.getInstance()
         cookieMan.setAcceptCookie(true)
-        val webView: WebView = WebView
         webView.getSettings().setSupportMultipleWindows(true);
         webView.settings.javaScriptEnabled = true
         webView.settings.setSupportMultipleWindows(true)
         webView.settings.javaScriptCanOpenWindowsAutomatically = true
         webView.loadUrl("https://skyward-fbprod.iscorp.com/scripts/wsisa.dll/WService=wsedufortbendtx/seplog01.w")
-//        myWebView.evaluateJavascript("login.value = \"(UserName)\"; password.value = \"(Password)\"; bLogin.click();") {
-//            val result = it
-//            println(result)
-//            //shouldOverrideUrlLoading(myWebView, result)
-//        }
         webView.webChromeClient = object : WebChromeClient() {
             override fun onCreateWindow(
                 view: WebView?,
@@ -63,12 +53,71 @@ class SkywardLogin : AppCompatActivity(){
                 view!!.addView(newWebView)
                 val transport = resultMsg!!.obj as WebView.WebViewTransport
                 transport.webView = newWebView
-                resultMsg!!.sendToTarget()
+                resultMsg.sendToTarget()
 
-                newWebView.webViewClient = WebViewClient()
+                newWebView.webViewClient = object : WebViewClient(){
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        super.onPageFinished(view, url)
+
+                        HandleNewWebpageReached(view!!, url!!)
+                    }
+                }
 
                 return true
             }
         }
     }
+
+    fun HandleNewWebpageReached(webView: WebView, url: String){
+        if (url.contains("sfhome01.w"))
+            webView.evaluateJavascript("document.querySelector('a[data-nav=\\\"sfgradebook001.w\\\"]').click()", null)
+        else if (url.contains("sfgradebook001.w")){
+//            val ScrapingJavascript = """
+////                function PrintTerms(){
+////             var FinalString = ""
+////            if (document.querySelector("div[id^=\"grid_stuGradesGrid\"]") != null){
+////			let GradeHTML =  document.querySelector("div[id^=\"grid_stuGradesGrid\"]")
+////			let GradeHTMLArr = GradeHTML.querySelectorAll("tr[group-parent]")
+////			for(var i = 0; i < GradeHTMLArr.length; i++){
+////				let gradeElement = GradeHTMLArr[i].querySelectorAll("td")
+////				for(var j = 0; j < gradeElement.length; j++){
+////					FinalString = FinalString + "@SWIFT_INDEX@" + j + "@SWIFT_GRADE@" + gradeElement[j].textContent
+////				}
+////			}
+////            FinalString = FinalString + "@SWIFT_HTML&TERMS_SEPARATION@"
+////            let elems = document.querySelector("div[id^=\"grid_stuGradesGrid\"]").querySelector("table[id*=\"grid_stuGradesGrid\"]").querySelectorAll("th")
+////            for(var i = 0; i < elems.length; i++){
+////                FinalString = FinalString + elems[i].textContent + "@SWIFT_TERM_SEPARATOR@"
+////            }
+////            }
+////            return FinalString
+////            }
+////            PrintTerms()
+////            """
+            val ScrapingJavascript = """
+            function PrintTerms(){
+             var FinalString = ""
+             if (typeof sf_StudentList !== "undefined"){
+            FinalString = FinalString + sf_StudentList.innerHTML
+             }else{
+             FinalString = FinalString + "@SWIFT_VALUE_DOES_NOT_EXIST"
+             }
+            FinalString = FinalString + "\n\n\n@SWIFT_DETERMINE_IF_STUDENT_LIST_EXIST\n\n\n"
+            if (document.querySelector("div[id^=\"grid_stuGradesGrid\"]") != null){
+            FinalString = FinalString + document.querySelector("div[id^=\"grid_stuGradesGrid\"]").innerHTML + "@SWIFT_HTML&TERMS_SEPARATION@"
+            let elems = document.querySelector("div[id^=\"grid_stuGradesGrid\"]").querySelector("table[id*=\"grid_stuGradesGrid\"]").querySelectorAll("th")
+            for(var i = 0; i < elems.length; i++){
+                FinalString = FinalString + elems[i].textContent + "@SWIFT_TERM_SEPARATOR@"
+            }
+            }
+            return FinalString
+            }
+            PrintTerms()
+            """.trimIndent()
+            webView.evaluateJavascript(ScrapingJavascript){
+                    Log.d("DEBUG", it)
+            }
+        }
     }
+}
+

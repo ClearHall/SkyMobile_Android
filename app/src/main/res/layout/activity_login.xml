@@ -9,7 +9,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context=".SkywardLogin">
+              tools:context=".SkywardLogin" android:background="#2F2F2F">
 
     <!-- Login progress -->
     <ProgressBar
@@ -20,14 +20,10 @@
             android:layout_marginBottom="8dp"
             android:visibility="gone"/>
 
-    <WebView
-            android:layout_width="match_parent"
-            android:layout_height="179dp" android:id="@+id/WebView"/>
     <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        android:layout_height="match_parent">
+            android:layout_height="wrap_content" android:visibility="visible">
 
         <LinearLayout
                 android:id="@+id/email_login_form"
@@ -37,46 +33,59 @@
 
             <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content" android:textColorHint="@android:color/white">
 
                 <AutoCompleteTextView
                         android:id="@+id/StudentID"
+                        android:height="40dp"
+                        android:background="@drawable/roundededit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:hint="@string/StudentID"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true"/>
+                        android:singleLine="true" android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white" android:paddingStart="5dp"
+                        android:paddingEnd="0dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content" android:textColorHint="@android:color/white">
 
                 <EditText
                         android:id="@+id/Password"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:hint="@string/prompt_password"
+                        android:background="@drawable/roundededit"
                         android:imeActionId="6"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:singleLine="true" android:autofillHints="" tools:targetApi="o"/>
+                        android:singleLine="true" android:autofillHints="" tools:targetApi="o"
+                        android:textColorHint="@android:color/white"
+                        android:textColor="@android:color/white" android:textColorHighlight="@android:color/white"
+                        android:paddingStart="5dp" android:paddingEnd="0dp"/>
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
                     android:id="@+id/email_sign_in_button"
                     style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
+                    android:layout_width="178dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold" android:onClick="sendMessage"/>
+                    android:text="@string/login"
+                    android:textStyle="bold" android:onClick="sendMessage" android:width="50dp"
+                    android:layout_gravity="center" android:background="@drawable/buttonrounded"/>
 
         </LinearLayout>
     </ScrollView>
+    <WebView
+            android:layout_width="match_parent"
+            android:layout_height="179dp" android:id="@+id/webView"
+            android:visibility="visible"/>
 </LinearLayout>

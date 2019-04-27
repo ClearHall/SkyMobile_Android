@@ -88,5 +88,5 @@
     <WebView
             android:layout_width="match_parent"
             android:layout_height="179dp" android:id="@+id/webView"
-            android:visibility="visible"/>
+            android:visibility="invisible"/>
 </LinearLayout>

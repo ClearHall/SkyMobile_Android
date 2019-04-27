@@ -19,7 +19,7 @@
                     android:layout_height="172dp">
 
                 <TableRow android:layout_width="match_parent"
-                          android:background="@drawable/RoundedRow" android:layout_height="match_parent"
+                          android:background="@drawable/rounded_row" android:layout_height="match_parent"
                           android:minHeight="45dp">
                     <TextView
                             android:text="TextView"
@@ -28,7 +28,7 @@
                             android:gravity="fill_vertical"/>
                 </TableRow>
                 <TableRow android:layout_width="match_parent"
-                          android:background="@drawable/RoundedRow" android:layout_height="45dp"
+                          android:background="@drawable/rounded_row" android:layout_height="45dp"
                           android:minHeight="45dp"/>
             </TableLayout>
         </LinearLayout>

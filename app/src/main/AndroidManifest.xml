@@ -23,6 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".ViewControllers.GradesRelated.ProgressReportViewController"
+                  android:label="Progress Report Grades"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -1,6 +1,7 @@
-package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
+package com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass
 
 var Courses = mutableListOf<Course>()
+var TermsAvailable = mutableListOf<String>()
 
 data class Account(
     var nickname: String,

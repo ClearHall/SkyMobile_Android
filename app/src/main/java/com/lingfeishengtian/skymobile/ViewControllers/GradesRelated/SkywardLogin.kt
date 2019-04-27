@@ -1,12 +1,16 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Message
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.webkit.*
+import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Course
+import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Courses
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.ParseGradesHTMLToRetrieveGrades
+import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.TermsAvailable
 import com.lingfeishengtian.skymobile.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -96,6 +100,8 @@ class SkywardLogin : AppCompatActivity(){
             """.trimIndent()
             webView.evaluateJavascript(ScrapingJavascript){
                 HandleGradeBookHTML(it)
+                val ProgressReportViewIntent = Intent(this, ProgressReportViewController::class.java)
+                startActivity(ProgressReportViewIntent)
             }
 
         }
@@ -111,6 +117,8 @@ class SkywardLogin : AppCompatActivity(){
         var GradingTerms = mutableListOf<String>()
 
         Courses = ParseGradesHTMLToRetrieveGrades(HTML, Terms, GradingTerms)
+        TermsAvailable = GradingTerms
+
         PrintCoursesToLog("Courses Details", Courses)
     }
 

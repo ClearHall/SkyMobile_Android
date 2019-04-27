@@ -16,16 +16,26 @@
                     android:textColor="@android:color/white" android:spinnerMode="dropdown"/>
             <TableLayout
                     android:layout_width="match_parent"
-                    android:layout_height="172dp">
+                    android:layout_height="fill_parent" android:id="@+id/GradesTable">
 
-                <TableRow android:layout_width="match_parent"
-                          android:background="@drawable/rounded_row" android:layout_height="match_parent"
+                <TableRow android:layout_width="wrap_content"
+                          android:background="@drawable/rounded_row" android:layout_height="fill_parent"
                           android:minHeight="45dp">
                     <TextView
                             android:text="TextView"
                             android:layout_width="45dp"
                             android:layout_height="match_parent" android:id="@+id/textView3"
-                            android:gravity="fill_vertical"/>
+                            android:gravity="fill_vertical" tools:text="@android:string/no"/>
+                    <TextView
+                            android:text="TextView"
+                            android:layout_width="314dp"
+                            android:layout_height="match_parent" android:id="@+id/textView"
+                            android:gravity="center|left" android:paddingLeft="5dp"/>
+                    <TextView
+                            android:text="TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" android:id="@+id/textView2"
+                            android:gravity="left|fill_vertical" tools:text="@android:string/no"/>
                 </TableRow>
                 <TableRow android:layout_width="match_parent"
                           android:background="@drawable/rounded_row" android:layout_height="45dp"

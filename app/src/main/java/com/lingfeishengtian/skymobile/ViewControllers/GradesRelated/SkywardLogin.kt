@@ -1,12 +1,15 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.webkit.*
+import android.widget.Toast
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Course
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Courses
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.ParseGradesHTMLToRetrieveGrades
@@ -19,6 +22,8 @@ class SkywardLogin : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        basicAlert()
 
         loadWebView()
     }
@@ -33,6 +38,18 @@ class SkywardLogin : AppCompatActivity(){
             """.trimIndent()){
                 print(it)
             }
+    }
+
+    fun basicAlert(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Hey There!")
+        builder.setMessage("This is an ALPHA version of SkyMobile, right now the application is just a demo to show what is to expect in the future. There may be bugs present and it DOES NOT look that good. But enjoy the demo!")
+
+        builder.setPositiveButton(android.R.string.ok) { dialog, which ->
+            Toast.makeText(applicationContext,
+                android.R.string.yes, Toast.LENGTH_SHORT).show()
+        }
+        builder.show()
     }
 
     fun loadWebView() {

@@ -9,7 +9,7 @@
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
               android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context="com.lingfeishengtian.skymobile.SkywardLogin" android:background="#2F2F2F">
+              tools:context="com.lingfeishengtian.skymobile.ViewControllers.GradesRelated.SkywardLogin" android:background="#2F2F2F">
 
     <!-- Login progress -->
     <ProgressBar

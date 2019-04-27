@@ -8,10 +8,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.lingfeishengtian.skymobile"
-        minSdkVersion 22
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "alpha_0.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

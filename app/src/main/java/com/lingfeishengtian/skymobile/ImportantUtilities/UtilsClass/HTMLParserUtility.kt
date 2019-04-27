@@ -1,7 +1,5 @@
 package com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass
 
-import android.util.Log
-import com.lingfeishengtian.skymobile.ViewControllers.GradesRelated.Course
 import org.jsoup.Jsoup
 
 /**
@@ -62,7 +60,6 @@ import org.jsoup.Jsoup
 
             var ind = 0
             for (tempElem in GradeElem){
-                Log.d("Courses Details", tempElem.text())
                 NewCourses.get(elementIndex).termGrades.put(gradesOut.get(ind), tempElem.text())
                 ind++
             }
@@ -91,7 +88,14 @@ import org.jsoup.Jsoup
                 Teacher = SplitClassDesc[1].split(")\\n ")[1].split("\\n\\n\\n")[0]
             }
 
-            val CurrentCourse = Course(ClassDescription, mutableListOf(), Period, Teacher, 1.0, mutableMapOf())
+            val CurrentCourse = Course(
+                ClassDescription,
+                mutableListOf(),
+                Period,
+                Teacher,
+                1.0,
+                mutableMapOf()
+            )
 
             FinalClasses.add(CurrentCourse)
         }

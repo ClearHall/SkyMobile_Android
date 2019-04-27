@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent" android:background="#2F2F2F"
+              tools:context="com.lingfeishengtian.skymobile.ViewControllers.GradesRelated.ProgressReportViewController">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:background="#2F2F2F">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" android:id="@+id/selectable_terms"
+                    android:textColor="@android:color/white" android:spinnerMode="dropdown"/>
+            <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="172dp">
+
+                <TableRow android:layout_width="match_parent"
+                          android:background="@drawable/RoundedRow" android:layout_height="match_parent"
+                          android:minHeight="45dp">
+                    <TextView
+                            android:text="TextView"
+                            android:layout_width="45dp"
+                            android:layout_height="match_parent" android:id="@+id/textView3"
+                            android:gravity="fill_vertical"/>
+                </TableRow>
+                <TableRow android:layout_width="match_parent"
+                          android:background="@drawable/RoundedRow" android:layout_height="45dp"
+                          android:minHeight="45dp"/>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

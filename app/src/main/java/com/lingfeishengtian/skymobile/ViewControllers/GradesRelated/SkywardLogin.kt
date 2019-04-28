@@ -1,6 +1,5 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
@@ -131,7 +130,7 @@ class SkywardLogin : AppCompatActivity(){
         val Terms = SeperatedTerms.last()
         var GradingTerms = mutableListOf<String>()
 
-        Courses = ParseGradesHTMLToRetrieveGrades(HTML, Terms, GradingTerms)
+        Courses = parseHtmlToRetrieveGrades(HTML, Terms, GradingTerms)
         TermsAvailable = GradingTerms
 
         PrintCoursesToLog("Courses Details", Courses)

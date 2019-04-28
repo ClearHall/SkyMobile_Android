@@ -7,12 +7,13 @@ import org.jsoup.Jsoup
  *
  * This class is a utility class used for parsing HTML and returning grades.
  * This class is very similar to the iOS version, in fact it is built from it!
- *
  */
 
    /**
      * Parse HTML and return the Courses scraped.
      *
+    * Uses "iOS Terms And Progress Assumption"
+    *
      * @param html The HTML scraped from the website.
      * @param gradesOut The terms our parameter.
      * @return Returns the courses from the HTML.
@@ -102,3 +103,11 @@ import org.jsoup.Jsoup
 
         return FinalClasses
     }
+
+/**
+ *  Will use "iOS Ambiguous Assignments Scraper"
+ *
+ *  @param html Assignment popup html code.
+ */
+fun RetriveAssignmentsFromHTML(html: String){
+}

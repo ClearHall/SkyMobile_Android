@@ -16,7 +16,11 @@ import android.graphics.Color
  */
 fun ColorGeneratingAlgorithmFromGrade(grade: Double): Int{
     val GreenColor = grade * 2.55/255
-    val RedColor = (1-GreenColor) * 6
+    var RedColor = (1-GreenColor) * 6
+
+    if (RedColor >= 1){
+        RedColor = 1.0
+    }
 
     return Color.argb(255, (RedColor * 255).toInt(), (GreenColor*255).toInt(), 0)
 }

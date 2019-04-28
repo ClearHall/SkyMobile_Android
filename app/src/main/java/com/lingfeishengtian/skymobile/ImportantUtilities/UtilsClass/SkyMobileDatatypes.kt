@@ -1,7 +1,10 @@
 package com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass
 
+import android.webkit.WebView
+
 var Courses = mutableListOf<Course>()
 var TermsAvailable = mutableListOf<String>()
+var SkywardWebpage: WebView? = null
 
 data class Account(
     var nickname: String,

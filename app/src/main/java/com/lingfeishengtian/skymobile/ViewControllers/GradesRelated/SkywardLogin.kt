@@ -1,6 +1,5 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
@@ -12,7 +11,7 @@ import android.webkit.*
 import android.widget.Toast
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Course
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Courses
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.ParseGradesHTMLToRetrieveGrades
+import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.retrieveGrades
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.TermsAvailable
 import com.lingfeishengtian.skymobile.R
 import kotlinx.android.synthetic.main.activity_login.*
@@ -133,7 +132,7 @@ class SkywardLogin : AppCompatActivity(){
         val Terms = SeperatedTerms.last()
         var GradingTerms = mutableListOf<String>()
 
-        Courses = ParseGradesHTMLToRetrieveGrades(HTML, Terms, GradingTerms)
+        Courses = retrieveGrades(HTML, Terms, GradingTerms)
         TermsAvailable = GradingTerms
 
         PrintCoursesToLog("Courses Details", Courses)

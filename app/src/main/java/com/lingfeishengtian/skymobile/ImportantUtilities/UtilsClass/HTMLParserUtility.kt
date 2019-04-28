@@ -18,7 +18,7 @@ import org.jsoup.Jsoup
      * @param gradesOut The terms our parameter.
      * @return Returns the courses from the HTML.
      */
-    fun ParseGradesHTMLToRetrieveGrades(html: String, termsHTML: String, gradesOut:MutableList<String>): MutableList<Course> {
+    fun parseHtmlToRetrieveGrades(html: String, termsHTML: String, gradesOut:MutableList<String>): MutableList<Course> {
         /**
          * Pre-Variable Init
          */
@@ -55,7 +55,7 @@ import org.jsoup.Jsoup
         /**
          * Final init Grades and initialize Courses
          */
-        NewCourses = SplitClassDescriptionForJSoup(Classes)
+        NewCourses = splitClasses(Classes)
         for (elementIndex in 0 until NewCourses.size){
             val GradeElem = ParentRowsFromParsedDocument.get(elementIndex).select("td")
 
@@ -74,7 +74,7 @@ import org.jsoup.Jsoup
      *
      * @param classArr Array of Class Descriptions
      */
-    private fun SplitClassDescriptionForJSoup(classArr: MutableList<String>): MutableList<Course>{
+    private fun splitClasses(classArr: MutableList<String>): MutableList<Course>{
         var FinalClasses = mutableListOf<Course>()
 
         for (ClassDesc in classArr){
@@ -109,5 +109,5 @@ import org.jsoup.Jsoup
  *
  *  @param html Assignment popup html code.
  */
-fun RetriveAssignmentsFromHTML(html: String){
+fun retrieveAssignmentsFromHtml(html: String){
 }

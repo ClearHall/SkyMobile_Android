@@ -6,7 +6,7 @@ import org.jsoup.Jsoup
  * A very *important* utility class.
  *
  * This class is a utility class used for parsing HTML and returning grades.
- * This class is very similar to the iOS version, in fact it is built from it!
+ * This class is very similar to the iOS version; in fact, it is modeled off it!
  */
 
    /**

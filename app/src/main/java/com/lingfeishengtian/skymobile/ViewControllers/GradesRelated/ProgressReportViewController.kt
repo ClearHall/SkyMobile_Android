@@ -5,25 +5,31 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.LayoutDirection
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Courses
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.TermsAvailable
 import kotlinx.android.synthetic.main.progress_report_view.*
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.ColorGeneratingAlgorithmFromGrade
+import android.widget.RelativeLayout
+import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.*
+import android.os.Handler
+import android.util.Log
 import com.lingfeishengtian.skymobile.R
 
 class ProgressReportViewController: AppCompatActivity() {
+    private val AssignmentVisibleCheckerInterval = 500
+    private var AssignmentVisibleChecker: Handler? = null
+
+    private var ClickedCourse: Course? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.progress_report_view)
 
         TermsDropdownListInit()
         TableRefreshOrInit()
+
+        AssignmentVisibleChecker = Handler()
     }
 
     private fun TermsDropdownListInit() {
@@ -51,17 +57,21 @@ class ProgressReportViewController: AppCompatActivity() {
 
         GradesTable.removeAllViews()
         GradesTable.setPadding(15,10,15,10)
-        //GradesTable.isStretchAllColumns = true
-        GradesTable.setColumnStretchable(2, true)
-        GradesTable.setColumnStretchable(1, true)
-        GradesTable.setColumnStretchable(0, false)
+//        //GradesTable.isStretchAllColumns = true
+//        GradesTable.setColumnStretchable(2, true)
+//        GradesTable.setColumnStretchable(1, false)
+//        GradesTable.setColumnStretchable(0, false)
 
         for (Course in Courses) {
             NeueRow = TableRow(this)
-            NeueRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT)
+            //NeueRow.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT)
             NeueRow.setBackgroundResource(R.drawable.rounded_row)
             NeueRow.minimumHeight = 45
 
+            val LayoutOfTableRow = RelativeLayout(this)
+            LayoutOfTableRow.minimumHeight = root_view.height/16
+            LayoutOfTableRow.setBackgroundResource(R.drawable.rounded_row)
+            LayoutOfTableRow.setPadding(15,10,15,10)
             /**
              * Required to init
              */
@@ -69,32 +79,46 @@ class ProgressReportViewController: AppCompatActivity() {
             ClassDesc = TextView(this)
             Grade = TextView(this)
 
-            val ArrOfViewsInTableRow = mutableListOf<TextView>(Period, ClassDesc, Grade)
+            val ArrOfViewsInTableRow = mutableListOf(Period, ClassDesc, Grade)
             for (View in ArrOfViewsInTableRow){
+                View.maxLines = 1
                 View.setTextColor(Color.BLACK)
-                View.height = 70
-                View.gravity = Gravity.CENTER or Gravity.LEFT
-                View.setPadding(5,0,0,0)
+                View.minimumHeight = root_view.height/16
+                View.gravity = Gravity.FILL_VERTICAL or Gravity.CENTER_VERTICAL
+                View.includeFontPadding = false
+                View.setPadding(10,0,15,0)
 
-                NeueRow.addView(View)
+                View.layoutParams
+                LayoutOfTableRow.addView(View)
+                (View.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.CENTER_IN_PARENT)
             }
-
             /**
              * Extra make look better stuffs
              */
-            //Grade.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT)
+            ClassDesc.width = GradesTable.width - (100 * 2)
 
-            Grade.textAlignment = TextView.TEXT_ALIGNMENT_VIEW_END
-            Grade.gravity = Gravity.END
+            (ClassDesc.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.RIGHT_OF, Period.id)
+            (ClassDesc.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.LEFT_OF, Grade.id)
+            (ClassDesc.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.CENTER_IN_PARENT)
+            (Period.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.ALIGN_PARENT_LEFT, ClassDesc.id)
+            (Grade.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.ALIGN_PARENT_RIGHT, ClassDesc.id)
+            (Grade.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.CENTER_VERTICAL, ClassDesc.id)
+            (Grade.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.TEXT_ALIGNMENT_CENTER, ClassDesc.id)
+
+            Period.width = 60
+            Grade.width = 150
+
+            Grade.gravity = Gravity.END or Gravity.CENTER_VERTICAL
             GapRow = TableRow(this)
             GapRow.minimumHeight = 10
 
             val GradeValue = Course.termGrades.get(selectable_terms.selectedItem.toString())
 
-            val DrawableBackground = NeueRow.background as GradientDrawable
+            val DrawableBackground = LayoutOfTableRow.background as GradientDrawable
             val GradeValueAsInt = GradeValue!!.toIntOrNull()
             if (GradeValueAsInt != null){
-                DrawableBackground.setColor(ColorGeneratingAlgorithmFromGrade(GradeValueAsInt.toDouble()))
+                val FinalColor = ColorGeneratingAlgorithmFromGrade(GradeValueAsInt.toDouble())
+                DrawableBackground.setColor(FinalColor)
             }else{
                 DrawableBackground.setColor(Color.argb(255,102, 153, 255))
             }
@@ -104,11 +128,57 @@ class ProgressReportViewController: AppCompatActivity() {
             ClassDesc.setText(Course.name)
             Grade.setText(GradeValue)
 
-            GradesTable.addView(NeueRow)
+            LayoutOfTableRow.setOnClickListener {
+                /**
+                 * "Click it until you fucking make it" algorithm.
+                 */
+                Log.d("Course Details", "Clicked")
+                if(GradeValueAsInt != null){
+                    ClickProgressReportToShowGrades(Course, selectable_terms.selectedItem.toString())
+                    //TODO: Loading icon...
+                    ClickedCourse = Course
+                    startRepeatingTask()
+                }
+            }
+
+            GradesTable.addView(LayoutOfTableRow)
             GradesTable.addView(GapRow)
         }
     }
+    private fun ClickProgressReportToShowGrades(course: Course, term: String){
+        Log.d("Course Details", term)
+        SkywardWebpage!!.evaluateJavascript("document.querySelectorAll(\"tr[group-parent]\")[${Courses.indexOf(course)}].querySelector(\"a[data-lit=\\\"$term\\\"]\").click();",null)
+    }
 
+    var AssignmentStatCheck: Runnable = object : Runnable {
+        override fun run() {
+            try {
+                updateStatus()
+            } finally {
+                AssignmentVisibleChecker!!.postDelayed(this, AssignmentVisibleCheckerInterval.toLong())
+            }
+        }
+    }
+
+    fun updateStatus(){
+        val JS = """
+                        document.querySelector("#gradeInfoDialog").outerHTML
+                    """.trimIndent()
+        SkywardWebpage!!.evaluateJavascript(JS){
+            if(it != "null") {
+                Log.d("Course Details", it)
+                stopRepeatingTask()
+            }
+        }
+    }
+
+    fun startRepeatingTask() {
+        AssignmentStatCheck.run()
+    }
+
+    fun stopRepeatingTask() {
+        AssignmentVisibleChecker!!.removeCallbacks(AssignmentStatCheck)
+    }
 }
 
 private class TermsArrayAdapter(context: Context) : ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, TermsAvailable){

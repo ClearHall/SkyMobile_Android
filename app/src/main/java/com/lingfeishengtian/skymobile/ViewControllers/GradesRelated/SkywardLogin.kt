@@ -10,10 +10,7 @@ import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Course
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.Courses
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.ParseGradesHTMLToRetrieveGrades
-import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.TermsAvailable
+import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.*
 import com.lingfeishengtian.skymobile.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -73,7 +70,6 @@ class SkywardLogin : AppCompatActivity(){
                 newWebView.settings.setSupportZoom(true)
                 newWebView.settings.builtInZoomControls = true
                 newWebView.settings.setSupportMultipleWindows(true)
-                view!!.addView(newWebView)
                 val transport = resultMsg!!.obj as WebView.WebViewTransport
                 transport.webView = newWebView
                 resultMsg.sendToTarget()
@@ -85,6 +81,8 @@ class SkywardLogin : AppCompatActivity(){
                         HandleNewWebpageReached(view!!, url!!)
                     }
                 }
+
+                SkywardWebpage = newWebView
 
                 return true
             }

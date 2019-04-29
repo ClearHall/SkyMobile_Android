@@ -1,4 +1,4 @@
-# SkyMobile_Android
+# SkyMobile Android
 SkyMobile for Android
 
 You may use the HTML Parser API, but you must also make your application open source.

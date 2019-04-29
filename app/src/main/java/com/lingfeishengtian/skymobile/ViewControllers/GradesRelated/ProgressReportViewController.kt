@@ -133,10 +133,8 @@ class ProgressReportViewController: AppCompatActivity() {
                 /**
                  * "Click it until you fucking make it" algorithm.
                  */
-                Log.d("Course Details", "Clicked")
                 if(GradeValueAsInt != null){
                     ClickProgressReportToShowGrades(Course, selectable_terms.selectedItem.toString())
-                    Log.d("Course Details", "CLICK")
                     //TODO: Loading icon...
                     ClickedCourse = Course
                     startRepeatingTask()

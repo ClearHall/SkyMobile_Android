@@ -1,6 +1,8 @@
 # SkyMobile_Android
 SkyMobile for Android
 
+You may use the HTML Parser API, but you must also make your application open source.
+
 ## Progress
 ■■■■■■■■□□□□□□□□□□□□ 40%	
 

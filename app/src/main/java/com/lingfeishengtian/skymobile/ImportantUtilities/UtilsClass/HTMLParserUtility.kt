@@ -22,24 +22,24 @@ import org.jsoup.Jsoup
         /**
          * Pre-Variable Init
          */
-        var NewCourses = mutableListOf<Course>()
-        var Classes = mutableListOf<String>()
-        val MainCSSSelectorCode = "tr[group-parent]"
-        val FinalHTML = html.replace("\\u003C", "<")
+        var newCourses: MutableList<Course>
+        var classStoreArray = mutableListOf<String>()
+        val mainCssCode = "tr[group-parent]"
+        val modifiedHtmlCode = html.replace("\\u003C", "<")
 
         /**
          * HTML Parsing
          */
-        val DocumentParsed = Jsoup.parse(FinalHTML)
-        val ParentRowsFromParsedDocument = DocumentParsed.select(MainCSSSelectorCode)
+        val parsedDocument = Jsoup.parse(modifiedHtmlCode)
+        val courseElementsByCssCode = parsedDocument.select(mainCssCode)
 
         /**
          * Get Classes from parsed HTML
          */
-        for(element in ParentRowsFromParsedDocument){
+        for(element in courseElementsByCssCode){
             val elementText = element.text()
             if(elementText.contains("Period")){
-                Classes.add(elementText)
+                classStoreArray.add(elementText)
             }
         }
 
@@ -55,18 +55,16 @@ import org.jsoup.Jsoup
         /**
          * Final init Grades and initialize Courses
          */
-        NewCourses = splitClasses(Classes)
-        for (elementIndex in 0 until NewCourses.size){
-            val GradeElem = ParentRowsFromParsedDocument.get(elementIndex).select("td")
+        newCourses = splitClasses(classStoreArray)
+        for (elementIndex in 0 until newCourses.size){
+            val gradeElement = courseElementsByCssCode[elementIndex].select("td")
 
-            var ind = 0
-            for (tempElem in GradeElem){
-                NewCourses.get(elementIndex).termGrades.put(gradesOut.get(ind), tempElem.text())
-                ind++
+            for ((ind, tempElem) in gradeElement.withIndex()){
+                newCourses[elementIndex].termGrades[gradesOut[ind]] = tempElem.text()
             }
         }
 
-        return NewCourses
+        return newCourses
     }
 
     /**
@@ -75,33 +73,33 @@ import org.jsoup.Jsoup
      * @param classArr Array of Class Descriptions
      */
     private fun splitClasses(classArr: MutableList<String>): MutableList<Course>{
-        var FinalClasses = mutableListOf<Course>()
+        var finalClassesList = mutableListOf<Course>()
 
         for (ClassDesc in classArr){
-            val SplitClassDesc = ClassDesc.split("\\n Period")
-            val Period = SplitClassDesc[1].split(")\\n ")[0].split("(")[0]
-            val ClassDescription = SplitClassDesc[0].split("\\n \\n \\n")[1]
-            var Teacher = ""
+            val splitClassName = ClassDesc.split("\\n Period")
+            val period = splitClassName[1].split(")\\n ")[0].split("(")[0]
+            val className = splitClassName[0].split("\\n \\n \\n")[1]
+            var teacher: String
 
-            if (SplitClassDesc[1].split(")\\n").size <= 1){
-                Teacher = SplitClassDesc[1].split("(")[0].split("\\n\\n\\n")[0]
+            teacher = if (splitClassName[1].split(")\\n").size <= 1){
+                splitClassName[1].split("(")[0].split("\\n\\n\\n")[0]
             }else {
-                Teacher = SplitClassDesc[1].split(")\\n ")[1].split("\\n\\n\\n")[0]
+                splitClassName[1].split(")\\n ")[1].split("\\n\\n\\n")[0]
             }
 
-            val CurrentCourse = Course(
-                ClassDescription,
+            val course = Course(
+                className,
                 mutableListOf(),
-                Period,
-                Teacher,
+                period,
+                teacher,
                 1.0,
                 mutableMapOf()
             )
 
-            FinalClasses.add(CurrentCourse)
+            finalClassesList.add(course)
         }
 
-        return FinalClasses
+        return finalClassesList
     }
 
 /**
@@ -109,5 +107,62 @@ import org.jsoup.Jsoup
  *
  *  @param html Assignment popup html code.
  */
-fun retrieveAssignmentsFromHtml(html: String){
+fun retrieveAssignmentsFromHtml(html: String) : AssignmentBlock{
+    val finAssignmentBlock = AssignmentBlock(mutableListOf())
+
+    val modifiedHtmlCode = html.replace("\\u003C", "<").replace("\\\\","")
+    val parsedDocument = Jsoup.parseBodyFragment(modifiedHtmlCode)
+    val finalGradesElements = parsedDocument.select("tbody").first().select("tbody").last()
+    val combined = finalGradesElements.select("tr")
+
+    var stillScrapingSections = false
+    for(assignment in combined){
+        var assignmentDescription = assignment.text()
+        val separatedTdValues = assignment.select("td")
+
+        if(assignment.outerHtml().contains("sf_Section")){
+            var weightAttempt: String? = null
+            var grade: String? = null
+
+            if(separatedTdValues[1].text().contains("weighted at ")){
+                weightAttempt = separatedTdValues[1].text().split("weighted at ").last().replace("%","")
+                assignmentDescription = separatedTdValues[1].text().split("weighted at ").first()
+            }
+
+            for (elem in separatedTdValues){
+                if (elem.text().toDoubleOrNull() != null){
+                    grade = elem.text()
+                }
+            }
+
+            if (!stillScrapingSections){
+                finAssignmentBlock.AssignmentSections.add(MainAssignmentSection(assignmentDescription, weightAttempt, mutableListOf(), mutableListOf(), grade))
+                stillScrapingSections = true
+            }else{
+                finAssignmentBlock.GetLatestMainSection().addMinorSection(MinorAssignmentSection(assignmentDescription, weightAttempt!!, grade!!))
+            }
+        }else{
+            stillScrapingSections = false
+
+            var grade = -1000.0
+            var assignmentDescription = ""
+            var finalAssignment: Assignment
+
+            if(separatedTdValues.size <= 1){
+                finalAssignment = Assignment("No grades here...", 0.0, AssignmentTag.IsInfoMarker)
+            }else{
+                for(elem in separatedTdValues){
+                    if(elem.text().trimEnd(' ').toDoubleOrNull() != null){
+                        grade = elem.text().trimEnd(' ').toDouble()
+                    }
+                }
+                assignmentDescription = separatedTdValues[1].text()
+                finalAssignment = Assignment(assignmentDescription, grade)
+            }
+
+            finAssignmentBlock.PutAssignmentInLastMainAssignmentSection(finalAssignment)
+        }
+    }
+
+    return finAssignmentBlock
 }

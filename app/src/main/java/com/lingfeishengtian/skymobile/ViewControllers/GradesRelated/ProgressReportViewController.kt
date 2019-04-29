@@ -1,6 +1,7 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -135,6 +136,7 @@ class ProgressReportViewController: AppCompatActivity() {
                 Log.d("Course Details", "Clicked")
                 if(GradeValueAsInt != null){
                     ClickProgressReportToShowGrades(Course, selectable_terms.selectedItem.toString())
+                    Log.d("Course Details", "CLICK")
                     //TODO: Loading icon...
                     ClickedCourse = Course
                     startRepeatingTask()
@@ -161,12 +163,22 @@ class ProgressReportViewController: AppCompatActivity() {
     }
 
     fun updateStatus(){
-        val JS = """
-                        document.querySelector("#gradeInfoDialog").outerHTML
+        val JS = """function checkForCorrectClass(){
+                        if(document.querySelector("table[id^=grid_stuGradeInfoGrid]").querySelector("a").text == "${ClickedCourse!!.name.trimStart(' ')}" && sf_DialogTitle_gradeInfoDialog.textContent.indexOf("${selectable_terms.selectedItem}") != -1){
+                        return document.querySelector("#gradeInfoDialog").outerHTML
+                        }else{
+                        return "No"
+                        }
+                        }
+                        checkForCorrectClass()
                     """.trimIndent()
         SkywardWebpage!!.evaluateJavascript(JS){
-            if(it != "null") {
-                Log.d("Course Details", it)
+            if(it != "No" && it != null && it != "null" && it != "\"No\"") {
+                CurrentAssignmentBlocks = retrieveAssignmentsFromHtml(it)
+
+                val ProgressReportViewIntent = Intent(this, AssignmentsViewController::class.java)
+                startActivity(ProgressReportViewIntent)
+
                 stopRepeatingTask()
             }
         }

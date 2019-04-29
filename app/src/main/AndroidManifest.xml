@@ -26,6 +26,8 @@
 
         <activity android:name=".ViewControllers.GradesRelated.ProgressReportViewController"
                   android:label="Progress Report Grades"></activity>
+        <activity android:name=".ViewControllers.GradesRelated.AssignmentsViewController"
+                  android:label="Progress Report Grades"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

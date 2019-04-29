@@ -14,4 +14,5 @@
     <string name="StudentID">Student ID</string>
     <string name="login">Login</string>
     <string name="assignment_title">Assignment Title</string>
+    <string name="prog_report_title">Progress Report</string>
 </resources>

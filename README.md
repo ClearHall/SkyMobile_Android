@@ -2,10 +2,11 @@
 SkyMobile for Android
 
 ## Progress
-15% Finished
+■■■■■■■■□□□□□□□□□□□□ 40%	
 
-- Skyward login API is being made.
-- Skyward parser API prep.
+- Skyward login API is finished
+- Skyward progress report parser is finished
+- Skyward assignment parse is finished
+- SkyMobile pretty up is on the way
 
-- Scraping API is based upon the iOS API. It has been slightly modified to support JSoup.
-- The Scraping currently only prints the courses and the term grades on LogCat as Courses Details.
+- Scraping API is based upon the iOS API.

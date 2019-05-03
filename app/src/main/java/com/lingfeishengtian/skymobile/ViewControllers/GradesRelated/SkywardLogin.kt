@@ -1,5 +1,6 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
@@ -9,23 +10,51 @@ import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.*
 import com.lingfeishengtian.skymobile.R
 import kotlinx.android.synthetic.main.activity_login.*
 
 class SkywardLogin : AppCompatActivity(){
 
+    var progressBar: ProgressDialog? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        MobileAds.initialize(this, "ca-app-pub-8149085154540848~8409752849")
 
+        val adRequest = AdRequest.Builder()
+            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            .build()
+        adView.loadAd(adRequest)
         basicAlert()
 
         loadWebView()
+
+        progressBar = ProgressDialog(this)
+        progressBar!!.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        progressBar!!.setTitle("Loading...")
+        progressBar!!.setCancelable(false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        progressBar!!.hide()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        progressBar!!.hide()
     }
 
     /** Called when the user taps the Send button */
     fun sendMessage(view: View) {
+        progressBar!!.show()
+
         val studentID = StudentID.text.toString()
         val password = Password.text.toString()
 

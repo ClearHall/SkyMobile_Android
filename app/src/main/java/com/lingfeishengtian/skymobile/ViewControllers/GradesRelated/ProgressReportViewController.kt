@@ -1,5 +1,6 @@
 package com.lingfeishengtian.skymobile.ViewControllers.GradesRelated
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -15,6 +16,8 @@ import android.widget.RelativeLayout
 import com.lingfeishengtian.skymobile.ImportantUtilities.UtilsClass.*
 import android.os.Handler
 import android.util.Log
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.lingfeishengtian.skymobile.R
 
 class ProgressReportViewController: AppCompatActivity() {
@@ -22,6 +25,8 @@ class ProgressReportViewController: AppCompatActivity() {
     private var AssignmentVisibleChecker: Handler? = null
 
     private var ClickedCourse: Course? = null
+
+    var progressBar : ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,23 @@ class ProgressReportViewController: AppCompatActivity() {
         TableRefreshOrInit()
 
         AssignmentVisibleChecker = Handler()
+
+        progressBar = ProgressDialog(this)
+        progressBar!!.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        progressBar!!.setTitle("Loading...")
+        progressBar!!.setCancelable(false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        progressBar!!.hide()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        progressBar!!.hide()
     }
 
     private fun TermsDropdownListInit() {
@@ -58,10 +80,6 @@ class ProgressReportViewController: AppCompatActivity() {
 
         GradesTable.removeAllViews()
         GradesTable.setPadding(15,10,15,10)
-//        //GradesTable.isStretchAllColumns = true
-//        GradesTable.setColumnStretchable(2, true)
-//        GradesTable.setColumnStretchable(1, false)
-//        GradesTable.setColumnStretchable(0, false)
 
         for (Course in Courses) {
             NeueRow = TableRow(this)
@@ -135,7 +153,9 @@ class ProgressReportViewController: AppCompatActivity() {
                  */
                 if(GradeValueAsInt != null){
                     ClickProgressReportToShowGrades(Course, selectable_terms.selectedItem.toString())
-                    //TODO: Loading icon...
+
+                    progressBar!!.show()
+
                     ClickedCourse = Course
                     startRepeatingTask()
                 }

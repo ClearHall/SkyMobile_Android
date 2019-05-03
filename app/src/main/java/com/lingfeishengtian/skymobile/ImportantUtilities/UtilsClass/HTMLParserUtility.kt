@@ -125,8 +125,8 @@ fun retrieveAssignmentsFromHtml(html: String) : AssignmentBlock{
             var grade: String? = null
 
             if(separatedTdValues[1].text().contains("weighted at ")){
-                weightAttempt = separatedTdValues[1].text().split("weighted at ").last().replace("%","")
-                assignmentDescription = separatedTdValues[1].text().split("weighted at ").first()
+                weightAttempt = separatedTdValues[1].text().split("weighted at ").last().replace("%","").replace(")","")
+                assignmentDescription = separatedTdValues[1].text().split("weighted at ").first().replace(" (","").trimEnd(' ')
             }
 
             for (elem in separatedTdValues){

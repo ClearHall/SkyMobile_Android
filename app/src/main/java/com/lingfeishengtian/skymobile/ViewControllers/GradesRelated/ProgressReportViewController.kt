@@ -30,6 +30,7 @@ class ProgressReportViewController: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.progress_report_view)
 
         TermsDropdownListInit()
@@ -112,7 +113,7 @@ class ProgressReportViewController: AppCompatActivity() {
                 (View.layoutParams as RelativeLayout.LayoutParams).addRule(RelativeLayout.CENTER_IN_PARENT)
             }
             /**
-             * Extra make look better stuffs
+             * Formatting to make the table to actually look good...
              */
             ClassDesc.width = GradesTable.width - (100 * 2)
 
@@ -131,6 +132,9 @@ class ProgressReportViewController: AppCompatActivity() {
             GapRow = TableRow(this)
             GapRow.minimumHeight = 10
 
+            /**
+             * Init. all values
+             */
             val GradeValue = Course.termGrades.get(selectable_terms.selectedItem.toString())
 
             val DrawableBackground = LayoutOfTableRow.background as GradientDrawable

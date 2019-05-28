@@ -103,7 +103,7 @@ import org.jsoup.Jsoup
     }
 
 /**
- *  Will use "iOS Ambiguous Assignments Scraper"
+ *  Will use *"iOS Ambiguous Assignments Scraper"*
  *
  *  @param html Assignment popup html code.
  */
@@ -145,7 +145,6 @@ fun retrieveAssignmentsFromHtml(html: String) : AssignmentBlock{
             stillScrapingSections = false
 
             var grade = -1000.0
-            var assignmentDescription = ""
             var finalAssignment: Assignment
 
             if(separatedTdValues.size <= 1){
@@ -165,4 +164,44 @@ fun retrieveAssignmentsFromHtml(html: String) : AssignmentBlock{
     }
 
     return finAssignmentBlock
+}
+
+/**
+ * Gets the detailed info about an assignment such as class high, class low, median etc.
+ *
+ * @param html The html being parsed
+ *
+ * @return The detailedInfoCells collected from the HTML
+ */
+fun retrieveMoreAssignmentDetails(html: String) : MutableList<DetailedAssignmentInfoBlock>{
+    var finValues = mutableListOf<DetailedAssignmentInfoBlock>()
+
+    val modifiedHtmlCode = html.replace("\\u003C", "<").replace("\\\\","")
+    val document = Jsoup.parse(modifiedHtmlCode)
+    val gradeElements = document.select("table")
+
+    for (elem in gradeElements){
+        for (trElem in elem.select("tr")){
+            val tdElems = trElem.select("td")
+            if (tdElems.size == 1){
+                finValues.add(DetailedAssignmentInfoBlock(tdElems.first().text(), null))
+            }else{
+                for (ind in 0..tdElems.size-1 step 2){
+                    finValues.add(DetailedAssignmentInfoBlock(tdElems.get(ind).text(), tdElems.get(ind + 1).text()))
+                }
+            }
+        }
+    }
+
+    if(gradeElements.first() != null)
+        if(gradeElements.first().select("a[onclick]") != null)
+            if (gradeElements.first().select("a[onclick]").size >= 2) {
+                var elem = gradeElements.first().select("a[onclick]")[1].parent().html()
+                if (elem != null) {
+                    elem = elem.split("\"html\": \"").last().split("\", \"autoHide\"").first()
+                    finValues.add(DetailedAssignmentInfoBlock("Comments: ", elem))
+                }
+            }
+
+    return finValues
 }

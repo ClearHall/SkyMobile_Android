@@ -6,6 +6,7 @@ var Courses = mutableListOf<Course>()
 var TermsAvailable = mutableListOf<String>()
 var SkywardWebpage: WebView? = null
 var CurrentAssignmentBlocks: AssignmentBlock? = null
+var CurrentAssignmentDetails = mutableListOf<DetailedAssignmentInfoBlock>()
 
 data class Account(
     var nickname: String,
@@ -100,6 +101,11 @@ data class District(
     val name: String,
     val link: String,
     val GPACalculatorSupport: GPACalcSupport
+)
+
+data class DetailedAssignmentInfoBlock(
+    val description: String,
+    val expandedDetail: String?
 )
 
 enum class GPACalcSupport{

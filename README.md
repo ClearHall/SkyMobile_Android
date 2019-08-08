@@ -1,3 +1,5 @@
+![Clements Stressful](https://img.shields.io/badge/clements-stressful-%23004fa3.svg)
+
 # SkyMobile Android
 SkyMobile for Android
 
@@ -8,4 +10,4 @@ You may use the HTML Parser API, but you must also make your application open so
 
 - SkyMobile basic foundation has been built.
 
-- Scraping API is based upon the iOS API.
+- SkyMobile UI is in development.

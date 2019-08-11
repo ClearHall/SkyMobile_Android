@@ -32,12 +32,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <com.google.android.gms.ads.AdView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    ads:adSize="SMART_BANNER"
-                    ads:adUnitId="ca-app-pub-8149085154540848/3112838912" android:id="@+id/adView"/>
-
             <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:textColorHint="@android:color/white">
@@ -88,11 +82,22 @@
                     android:text="@string/login"
                     android:textStyle="bold" android:onClick="sendMessage" android:width="50dp"
                     android:layout_gravity="center" android:background="@drawable/buttonrounded"/>
+            <TableLayout
+                    android:layout_width="363dp"
+                    android:layout_height="163dp" tools:layout_editor_absoluteY="8dp"
+                    tools:layout_editor_absoluteX="8dp" android:paddingTop="10dp" android:id="@+id/saved_accounts">
+
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"/>
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"/>
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"/>
+                <TableRow android:layout_width="match_parent" android:layout_height="match_parent"/>
+            </TableLayout>
 
         </LinearLayout>
     </ScrollView>
     <WebView
             android:layout_width="match_parent"
             android:layout_height="179dp" android:id="@+id/webView"
-            android:visibility="invisible"/>
+            android:visibility="invisible">
+    </WebView>
 </LinearLayout>
